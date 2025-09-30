@@ -1,0 +1,47 @@
+# 민감정보
+*.env
+.env*
+config.json
+secrets.json
+credentials.json
+*.key
+*.pem
+*.p12
+*.pfx
+
+# API 키 및 토큰
+*api_key*
+*token*
+*secret*
+*password*
+
+# 데이터베이스
+*.db
+*.sqlite
+*.sqlite3
+
+# 로그 파일
+*.log
+logs/
+
+# 임시 파일
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
