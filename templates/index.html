@@ -1,54 +1,91 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
     <title>문서 목록</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1 { color: #333; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .pagination { margin-top: 20px; text-align: center; }
-        .pagination a {
-            display: inline-block;
-            padding: 8px 16px;
-            text-decoration: none;
-            color: #007bff;
-            border: 1px solid #ddd;
-            margin: 0 4px;
-        }
-        .pagination a.active {
-            background-color: #007bff;
-            color: white;
-            border: 1px solid #007bff;
-        }
-        .pagination a:hover:not(.active) { background-color: #ddd; }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        color: #333;F
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .pagination {
+        margin-top: 20px;
+        text-align: center;
+      }
+      .pagination a {
+        display: inline-block;
+        padding: 8px 16px;
+        text-decoration: none;
+        color: #007bff;
+        border: 1px solid #ddd;
+        margin: 0 4px;
+      }
+      .pagination a.active {
+        background-color: #007bff;
+        color: white;
+        border: 1px solid #007bff;
+      }
+      .pagination a:hover:not(.active) {
+        background-color: #ddd;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>문서 목록</h1>
 
     <table>
+      <thead>
         <tr>
-            <th>ID</th>
-            <th>제목</th>
-            <th>내용</th>
+          <th>ID</th>
+          <th>제목</th>
+          <th>내용</th>
         </tr>
+      </thead>
+      <tbody>
+        {% for doc in documents %}
         <tr>
-            <td>1</td>
-            <td>샘플 제목</td>
-            <td>샘플 내용</td>
+          <td>{{ doc[0] }}</td>
+          <td>{{ doc[1] }}</td>
+          <td>{{ doc[2] }}</td>
         </tr>
+        {% else %}
+        <tr>
+          <td colspan="3">데이터가 없습니다.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
 
     <div class="pagination">
-        <a href="#">&laquo;</a>
-        <a href="#" class="active">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <a href="#">&raquo;</a>
+      {% if total_pages > 1 %} {% if page > 1 %}
+      <a href="{{ url_for('index', page=page-1) }}">이전</a>
+      {% endif %} {% for p in range(1, total_pages + 1) %}
+      <a
+        href="{{ url_for('index', page=p) }}"
+        class="{{ 'active' if p == page else '' }}"
+      >
+        {{ p }}</a
+      >
+      {% endfor %} {% if page < total_pages %}
+      <a href="{{ url_for('index', page=page+1) }}">다음</a>
+      {% endif %} {% endif %}
     </div>
-</body>
+  </body>
 </html>
