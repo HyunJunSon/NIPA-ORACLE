@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배추 가격 예측</title>
+    <link  rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>배추 가격 예측</h1>
+        <form method="post">
+            <div class="form-group">
+                <label for="avg_temp">평균 기온</label>
+                <input type="text" id="avg_temp" name="avg_temp" required>
+            </div>
+            <div class="form-group">
+                <label for="min_temp">최저 기온</label>
+                <input type="text" id="min_temp" name="min_temp" required>
+            </div>
+
+ <div class="form-group">
+                <label for="max_temp">최고 기온</label>
+                <input type="text" id="max_temp" name="max_temp" required>
+            </div>
+            <div class="form-group">
+                <label for="rain_fall">강수량</label>
+                <input type="text" id="rain_fall" name="rain_fall" required>
+            </div>
+            <button type="submit">예측하기</button>
+        </form>
+        {% if prediction %}
+        <div class="result">
+            <h3>예측 결과</h3>
+            <p><strong>예상 배추 가격(price):</strong> {{ prediction }} 원</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
