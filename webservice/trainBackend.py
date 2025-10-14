@@ -39,10 +39,10 @@ app = FastAPI()
 
 # 요청 본문을 위한 Pydantic 모델 정의
 class TextRequest(BaseModel):
-    avg_temp: float
-    min_temp: float
-    max_temp: float
-    rain_fall: float
+    avg_temp: float 
+    min_temp: float 
+    max_temp: float 
+    rain_fall: float 
 
 # 응답 본문을 위한 Pydantic 모델 정의
 class PredictResponse(BaseModel):

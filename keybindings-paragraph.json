@@ -1,0 +1,18 @@
+[
+  {
+    "key": "cmd+up",
+    "command": "cursorMove",
+    "args": {
+      "to": "up",
+      "by": "paragraph"
+    }
+  },
+  {
+    "key": "cmd+down",
+    "command": "cursorMove", 
+    "args": {
+      "to": "down",
+      "by": "paragraph"
+    }
+  }
+]
