@@ -1,6 +1,7 @@
 # rag_model.py
 import os
 import psycopg
+import fitz  # PyMuPDF
 from typing import List, Union
 from pathlib import Path
 from dotenv import load_dotenv
@@ -17,6 +18,52 @@ from langchain.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.documents import Document
+
+
+def extract_images_from_pdf(pdf_path: str, output_dir: str = "data/pic-data/") -> List[str]:
+    """
+    PDF에서 이미지를 추출하여 output_dir에 저장
+    
+    Args:
+        pdf_path: PDF 파일 경로
+        output_dir: 이미지 저장 디렉토리
+    
+    Returns:
+        저장된 이미지 파일 경로 리스트
+    """
+    # 출력 디렉토리 생성
+    os.makedirs(output_dir, exist_ok=True)
+    
+    pdf_document = fitz.open(pdf_path)
+    saved_images = []
+    file_name = Path(pdf_path).stem  # 확장자 제외한 파일명
+    
+    for page_index in range(len(pdf_document)):
+        page = pdf_document[page_index]
+        images = page.get_images(full=True)
+        print(f"페이지 {page_index}: {len(images)}개 이미지 발견")
+        
+        for img_index, img in enumerate(images):
+            try:
+                xref = img[0]
+                base_image = pdf_document.extract_image(xref)
+                image_bytes = base_image["image"]
+                
+                # 파일명 생성: 원본파일명_페이지번호_이미지번호.확장자
+                image_ext = base_image["ext"]
+                filename = f"{file_name}_page{page_index}_img{img_index}.{image_ext}"
+                filepath = os.path.join(output_dir, filename)
+                
+                with open(filepath, "wb") as f:
+                    f.write(image_bytes)
+                print(f"✅ {filename} 저장 완료")
+                saved_images.append(filepath)
+            except Exception as e:
+                print(f"❌ 에러: {e}")
+    
+    pdf_document.close()
+    return saved_images
+
 
 class RAGBot:
     def __init__(self, file_paths: Union[str, List[str]], collection_name: str = "rag-resume"):
@@ -110,7 +157,12 @@ class RAGBot:
                 print(f"  📄 로딩 중: {file_name}")
                 
                 # 파일 타입별 로더 선택
+                extracted_images = []
                 if file_ext == '.pdf':
+                    # PDF에서 이미지 추출
+                    extracted_images = extract_images_from_pdf(file_path)
+                    print(f"    🖼️ PDF에서 {len(extracted_images)}개 이미지 추출됨")
+                    
                     loader = PyPDFLoader(file_path)
                     docs = loader.load()
                     
@@ -143,6 +195,11 @@ class RAGBot:
                     if "source" not in doc.metadata:
                         doc.metadata["source"] = file_path
                     doc.metadata["filename"] = file_name
+                    
+                    # PDF 파일의 경우 추출된 이미지 정보 추가
+                    if file_ext == '.pdf':
+                        doc.metadata["extracted_images"] = extracted_images
+                        doc.metadata["has_images"] = len(extracted_images) > 0
                 
                 self.documents.extend(docs)
                 print(f"    ✅ {len(docs)}개 문서/페이지 로드됨")
@@ -182,7 +239,19 @@ class RAGBot:
             formatted = []
             for idx, doc in enumerate(docs, 1):
                 source = doc.metadata.get('filename', doc.metadata.get('source', '알 수 없음'))
-                formatted.append(f"[출처: {source}]\n{doc.page_content}")
+                
+                # 문서 내용
+                content = f"[출처: {source}]\n{doc.page_content}"
+                
+                # PDF에서 추출된 이미지 정보 추가
+                if doc.metadata.get('has_images', False):
+                    extracted_images = doc.metadata.get('extracted_images', [])
+                    if extracted_images:
+                        image_info = f"\n[포함된 이미지: {len(extracted_images)}개]"
+                        image_list = "\n" + "\n".join([f"- 이미지 파일: {os.path.basename(img_path)}" for img_path in extracted_images])
+                        content += image_info + image_list
+                
+                formatted.append(content)
             return "\n\n---\n\n".join(formatted)
 
         return (
