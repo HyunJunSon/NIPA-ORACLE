@@ -11,7 +11,6 @@ from langchain.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 
-
 class RAGBot:
     def __init__(self, file_path: str, collection_name: str = "rag-healthcare"):
         load_dotenv()
