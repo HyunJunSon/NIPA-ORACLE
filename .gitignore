@@ -46,3 +46,4 @@ env/
 *.swp
 *.swo
 data/
+agent_rag_example*/

@@ -1,0 +1,24 @@
+[tool.mypy]
+# Global mypy configuration for the project
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+show_error_codes = true
+show_error_context = true
+namespace_packages = true
+
+# For specific directories, you can add more granular configurations
+# [tool.mypy."tests.*"]
+# disallow_untyped_defs = false
+
+[[tool.mypy.overrides]]
+module = [
+    "streamlit.*",
+]
+ignore_missing_imports = true
