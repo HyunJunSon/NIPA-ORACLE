@@ -1,0 +1,135 @@
+// Place your key bindings in this file to override the defaults
+[
+    // --- Jupyter ---
+    {
+        "key": "f9",
+        "command": "jupyter.gotoNextCell",
+        "when": "editorTextFocus && jupyter.ownsSelection && !findInputFocussed && !notebookEditorFocussed"
+    },
+    {
+        "key": "f8",
+        "command": "jupyter.gotoPreviousCell",
+        "when": "editorTextFocus && jupyter.ownsSelection && !findInputFocussed && !notebookEditorFocussed"
+    },
+    {
+        "key": "ctrl+cmd+j",
+        "command": "jupyter.movecellup",
+        "when": "editorTextFocus && jupyter.ownsSelection && !findInputFocussed && !notebookEditorFocussed"
+    },
+    {
+        "key": "ctrl+cmd+k",
+        "command": "jupyter.movecelldown",
+        "when": "editorTextFocus && jupyter.ownsSelection && !findInputFocussed && !notebookEditorFocussed"
+    },
+    // --- Multi-cursor ---
+    {
+        "key": "ctrl+shift+up",
+        "command": "editor.action.insertCursorAbove",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+shift+down",
+        "command": "editor.action.insertCursorBelow",
+        "when": "editorTextFocus"
+    },
+    // Note: cmd+click is not recommended due to conflict with Go to Definition. Use option+click (default).
+    // --- Code Selection & Navigation ---
+    {
+        "key": "cmd+ctrl+g",
+        "command": "editor.action.selectHighlights",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "option+f7",
+        "command": "editor.action.goToReferences",
+        "when": "editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor"
+    },
+    {
+        "key": "cmd+alt+b",
+        "command": "editor.action.goToImplementation",
+        "when": "editorHasImplementationProvider && editorTextFocus && !isInEmbeddedEditor"
+    },
+    {
+        "key": "f4",
+        "command": "editor.action.goToImplementation",
+        "when": "editorHasImplementationProvider && editorTextFocus && !isInEmbeddedEditor"
+    },
+    {
+        "key": "cmd+left",
+        "command": "workbench.action.goBack"
+    },
+    {
+        "key": "cmd+right",
+        "command": "workbench.action.goForward"
+    },
+    {
+        "key": "cmd+option+j",
+        "command": "editor.action.showHover",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "f1",
+        "command": "editor.action.showHover",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+up",
+        "command": "editor.action.smartSelect.expand",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+down",
+        "command": "editor.action.smartSelect.shrink",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "cmd+alt+right",
+        "command": "cursorWordEndRight",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "cmd+alt+left",
+        "command": "cursorWordStartLeft",
+        "when": "editorTextFocus"
+    },
+    // Note: F11/F12 for file start/end is not recommended. Use cmd+up/down (default).
+    // --- View & Panel Management ---
+    {
+        "key": "cmd+1",
+        "command": "workbench.view.explorer"
+    },
+    {
+        "key": "cmd+esc",
+        "command": "workbench.action.closeSidebar"
+    },
+    {
+        "key": "cmd+shift+g",
+        "command": "workbench.view.scm"
+    },
+    {
+        "key": "ctrl+shift+m",
+        "command": "workbench.actions.view.problems"
+    },
+    // --- Defaults (already good, listed for completeness) ---
+    {
+        "key": "cmd+p",
+        "command": "workbench.action.quickOpen"
+    },
+    {
+        "key": "cmd+\",
+        "command": "workbench.action.splitEditor"
+    },
+    {
+        "key": "cmd+shift+\",
+        "command": "editor.action.jumpToBracket",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "cmd+shift+o",
+        "command": "workbench.action.gotoSymbol"
+    },
+    {
+        "key": "ctrl+g",
+        "command": "workbench.action.gotoLine"
+    }
+]
