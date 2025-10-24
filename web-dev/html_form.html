@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <form action="process/addUser," method="post">
+    <h2>회원가입</h2>
+      <p>
+        <h5>학년</h5>
+        <input type="radio" name="year" value="1">1학년
+        <input type="radio" name="year" value="2">2학년
+        <input type="radio" name="year" value="3">3학년
+      </p>
+      <p>
+        <h5>수강과목</h5>
+        <input type="checkbox" name="lan" value="eng" checked="checked">영어</input>
+        <input type="checkbox" name="lan" value="kor" checked="checked">한국</input>
+        <input type="checkbox" name="lan" value="jpn" checked="checked">일어</input>
+      </p>
+
+      <p>
+        <h5>거주지역</h5>
+        <label for="my-select">거주지역</label>
+        <select name="area" id="my-select">
+          <option value="songpa">송파구</option>
+          <option value="gangnam">강남구</option>
+          <option value="gangdong">강동구</option>
+        </select>
+      </p>
+      <label for="">아이디</label> <input type="text" name="id"><br>
+      <label for="intro">비밀번호</label> <input type="password" name="password"><br>
+      <input type="submit" value="전송">
+  </form>  
+</body>
+</html>

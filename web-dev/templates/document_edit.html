@@ -1,0 +1,57 @@
+
+
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="mb-0">
+          {% if document %}Edit Document{% else %}New Document{% endif %}
+        </h4>
+      </div>
+      <div class="card-body">
+        <form method="POST">
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              name="title"
+              value="{{ document.title if document }}"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <textarea
+              class="form-control"
+              id="content"
+              name="content"
+              rows="10"
+              required
+            >{{ document.content if document }}</textarea>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+              {% if document %}Update{% else %}Create{% endif %}
+            </button>
+            <a
+              href="{{ url_for('document_list') }}"
+              class="btn btn-secondary"
+            >
+              Cancel
+            </a>
+            {% if document %}
+            <small class="text-muted ms-auto align-self-center">
+              Last updated: {{ document.updated_at.strftime('%Y-%m-%d %H:%M') }}
+            </small>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
