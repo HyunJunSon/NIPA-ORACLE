@@ -1,0 +1,228 @@
+m<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>베이비챗</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        #message-container {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 70vh;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            border-left: 3px solid #4285f4;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .user-info {
+            font-weight: bold;
+            color: #1a73e8;
+            font-size: 14px;
+        }
+
+        .timestamp {
+            font-size: 12px;
+            color: #5f6368;
+        }
+
+        .message-content {
+            color: #202124;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .own-message {
+            background-color: #e8f0fe;
+            border-left: 3px solid #1a73e8;
+        }
+
+        #messageForm {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #formUser, #formMessage {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #fff;
+            color: #202124;
+        }
+
+        #formUser {
+            width: 100px;
+        }
+
+        #formMessage {
+            flex: 1;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #3367d6;
+        }
+
+        h1 {
+            text-align: center;
+            color: #202124;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .chat-title {
+            color: #1a73e8;
+        }
+    </style>
+</head>
+<body>
+    <h1><span class="chat-title">베이비챗</span> 💬</h1>
+    
+    <!-- 메시지 내용이 추가 되는 영역 -->
+    <div id="message-container"></div>
+
+    <!-- 유저명과 메시지를 작성하고 데이터를 보내는 요소 -->
+    <form id="messageForm">
+        <input id="formUser" type="text" placeholder="이름" />
+        <input id="formMessage" type="text" placeholder="메시지를 입력하세요..." />
+        <button type="submit">전송</button>
+    </form>
+
+    <!-- 소켓 통신 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js"></script>
+    <script>
+        // 소켓 서버 연결
+        var socket = io.connect(
+            "http://" + document.domain + ":" + location.port
+        );
+
+        // 현재 사용자의 이름을 저장
+        let currentUsername = '';
+
+        // 소켓 서버 이벤트 처리
+        socket.on("message", function (data) {
+            var messageContainer = document.getElementById("message-container");
+            
+            // 새로운 메시지 요소 생성
+            var messageDiv = document.createElement("div");
+            messageDiv.className = "message";
+            
+            // 타임스탬프 생성 - 서버에서 받은 타임스탬프 사용
+            let timeString;
+            if (data.timestamp) {
+                const timestamp = new Date(data.timestamp);
+                timeString = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            } else {
+                const now = new Date();
+                timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+            
+            // 사용자 이름이 현재 사용자와 같으면 다른 스타일 적용
+            if (data.user === currentUsername) {
+                messageDiv.classList.add("own-message");
+            }
+            
+            // 메시지 헤더 (사용자 이름 + 타임스탬프)
+            var headerDiv = document.createElement("div");
+            headerDiv.className = "message-header";
+            
+            var userSpan = document.createElement("span");
+            userSpan.className = "user-info";
+            userSpan.textContent = data.user || '익명';
+            
+            var timeSpan = document.createElement("span");
+            timeSpan.className = "timestamp";
+            timeSpan.textContent = timeString;
+            
+            headerDiv.appendChild(userSpan);
+            headerDiv.appendChild(timeSpan);
+            
+            // 메시지 내용
+            var contentSpan = document.createElement("div");
+            contentSpan.className = "message-content";
+            contentSpan.textContent = data.message;
+            
+            // 메시지 요소에 헤더와 내용 추가
+            messageDiv.appendChild(headerDiv);
+            messageDiv.appendChild(contentSpan);
+            
+            // 메시지 컨테이너에 추가
+            messageContainer.appendChild(messageDiv);
+            
+            // 스크롤을 가장 아래로 이동
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        });
+
+        // 전송 버튼을 누를 경우 유저 이름과 메시지 내용 소켓 서버로 전달
+        document.querySelector("#messageForm").onsubmit = function (e) {
+            e.preventDefault(); // 폼 기본 동작 방지
+            
+            var userName = document.getElementById("formUser");
+            var userMessage = document.getElementById("formMessage");
+
+            let userInfo = userName.value.trim();
+            let messageInfo = userMessage.value.trim();
+
+            // 사용자 이름이 없으면 설정
+            if (!currentUsername && userInfo) {
+                currentUsername = userInfo;
+            }
+            
+            // 메시지가 비어있지 않으면 전송
+            if (messageInfo) {
+                // 메시지 데이터 보내기
+                socket.emit("message", { user: userInfo, message: messageInfo });
+
+                // 메시지 입력 내용 초기화
+                userMessage.value = "";
+            }
+
+            return false;
+        };
+    </script>
+</body>
+</html>
