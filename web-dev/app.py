@@ -81,7 +81,10 @@ def document_list():
 def load_user(user_id):
     return User.get_by_id(db_manager, int(user_id))
 
+
+# Only run the development server if the script is executed directly
+# This prevents the development server from running when using Gunicorn
 if __name__ == '__main__':
     # Create test user if not exists
     db_manager.create_test_user()
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", debug=False)  # Disable debug in production

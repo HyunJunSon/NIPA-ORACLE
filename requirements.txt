@@ -1,2 +1,11 @@
 streamlit
 mypy
+gunicorn>=20.1.0
+flask
+torch
+flask-socketio
+eventlet
+gevent
+SpeechRecognition
+pyaudio
+pydub

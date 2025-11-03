@@ -64,5 +64,5 @@ def home():
 
 if __name__ == '__main__':
     # 웹 서버를 5000번 포트로 실행합니다.
-    app.run(host='localhost', port=5000,debug=True)
+    app.run(host='localhost', port=5000, debug=False)  # Disable debug in production
 
