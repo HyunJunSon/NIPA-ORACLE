@@ -9,7 +9,7 @@ Language: ko
 
 00:00:01.750 --> 00:00:01.760 align:start position:0%
 당신이 나가 안 그럼 여기 있는 거
- 
+÷ 
 
 00:00:01.760 --> 00:00:05.470 align:start position:0%
 당신이 나가 안 그럼 여기 있는 거

@@ -8,6 +8,7 @@ credentials.json
 *.pem
 *.p12
 *.pfx
+gaon-service-account.json
 
 # API 키 및 토큰
 *api_key*
